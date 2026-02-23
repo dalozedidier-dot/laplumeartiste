@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Article | Modèle UI</title>
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+  <a class="skip" href="#contenu">Aller au contenu</a>
+  <header class="header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="Accueil">
+        <div class="logo" aria-hidden="true"></div>
+        <div class="brand-text">
+          <div class="brand-name">La Plume Artiste</div>
+          <div class="brand-tag">Magazine personnel. Journalisme, littérature, art.</div>
+        </div>
+      </a>
+
+      <nav class="nav" aria-label="Navigation principale">
+        <a href="index.html" class="">Accueil</a>
+        <a href="listing.html" class="active">Articles</a>
+        <a href="contact.html" class="">Contact</a>
+      </nav>
+
+      <div class="tools">
+        <div class="search" role="search" aria-label="Recherche">
+          <span aria-hidden="true">⌕</span>
+          <input type="search" placeholder="Rechercher" aria-label="Rechercher" />
+        </div>
+        <a class="btn primary" href="contact.html#newsletter">S’abonner</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="contenu" class="container">
+
+  <section class="article" aria-label="Article">
+    <article class="prose">
+      <div class="kicker">Psychologie</div>
+      <h1>Les profils idéaux. Illusion, projection, et ce que l’on cherche vraiment</h1>
+      <p class="lead">
+        Une page article pensée pour la lecture. Colonne maîtrisée, intertitres, citations, et encadrés.
+      </p>
+      <p class="byline">Publié le 27 janvier 2026. Temps de lecture estimé. 8 minutes.</p>
+
+      <p>
+        Quand on parle de profil idéal, on mélange souvent trois choses. Le désir. Le besoin. Le récit.
+        Le résultat, c’est qu’on croit viser une personne, alors qu’on cherche surtout une sensation.
+      </p>
+
+      <blockquote>
+        La compatibilité n’est pas une preuve de destin. C’est une capacité à construire dans le réel.
+      </blockquote>
+
+      <h2>1. Le désir est une direction, pas un verdict</h2>
+      <p>
+        Un bon design éditorial sert le texte. Il aide à respirer. Il rend l’intention visible.
+        Ici, chaque section a une fonction, et la page garde une cohérence d’ensemble.
+      </p>
+
+      <div class="callout">
+        <strong>À retenir</strong>
+        <div style="margin-top:6px; color: var(--muted);">
+          Clarifier l’angle dès les premières lignes augmente la confiance du lecteur.
+        </div>
+      </div>
+
+      <h2>2. La projection fait croire que l’on a compris</h2>
+      <p>
+        Une interface pro limite le bruit. Elle évite les répétitions et favorise une navigation stable.
+        Le lecteur doit savoir où il est, quoi lire ensuite, et comment s’abonner.
+      </p>
+
+      <h2>3. Le réel tranche</h2>
+      <p>
+        La conclusion n’a pas besoin d’être spectaculaire. Elle doit être nette.
+        Dans un site personnel, le luxe, c’est la lisibilité et la constance.
+      </p>
+
+      <div class="tags" aria-label="Tags">
+        <a href="listing.html">Psychologie</a>
+        <a href="listing.html">Relationnel</a>
+        <a href="listing.html">Lecture</a>
+      </div>
+
+      <section class="section" aria-label="Articles liés">
+        <div class="section-head">
+          <div>
+            <div class="section-title">Articles liés</div>
+            <div class="section-sub">Une sélection courte, orientée découverte.</div>
+          </div>
+          <a class="btn" href="listing.html">Voir tous les articles</a>
+        </div>
+
+        <div class="grid">
+          <article class="card" style="grid-column: span 6;">
+            <div class="card-media" aria-hidden="true"></div>
+            <div class="card-body">
+              <div class="meta">
+                <span>12 janv 2026</span><span class="dot"></span><span>6 min</span><span class="dot"></span><span>Société</span>
+              </div>
+              <h3><a href="article.html">Regarder le réel sans se perdre</a></h3>
+              <p>Attention, nuance, et hygiène mentale face au flux.</p>
+            </div>
+          </article>
+
+          <article class="card" style="grid-column: span 6;">
+            <div class="card-media" aria-hidden="true"></div>
+            <div class="card-body">
+              <div class="meta">
+                <span>04 déc 2025</span><span class="dot"></span><span>5 min</span><span class="dot"></span><span>Portrait</span>
+              </div>
+              <h3><a href="article.html">Portrait. Une voix, une trajectoire</a></h3>
+              <p>Une mise en page magazine, simple et lisible.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+    </article>
+
+    <aside class="sidebar" aria-label="Encarts">
+      <div class="panel">
+        <h3>À propos</h3>
+        <p>Bio courte, positionnement, et liens de contact.</p>
+        <a class="btn primary" href="contact.html">Me contacter</a>
+      </div>
+
+      <div class="panel">
+        <h3>Newsletter</h3>
+        <p>Un email quand un texte sort. Rien d’autre.</p>
+        <form action="#" onsubmit="return false;">
+          <input type="email" placeholder="Ton email" aria-label="Email" style="width:100%; margin-bottom:8px;" />
+          <button class="btn primary" type="submit" style="width:100%;">S’abonner</button>
+        </form>
+      </div>
+
+      <div class="panel">
+        <h3>Repères</h3>
+        <ul>
+          <li>Navigation stable</li>
+          <li>Typographie lisible</li>
+          <li>Sections éditoriales claires</li>
+          <li>Appels à l’action sobres</li>
+        </ul>
+      </div>
+    </aside>
+  </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div>
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+          <div class="logo" aria-hidden="true" style="width:34px;height:34px;border-radius:12px;"></div>
+          <div>
+            <div style="font-weight:850; color:#111;">La Plume Artiste</div>
+            <div class="smallprint">Écriture, observation, portraits et idées.</div>
+          </div>
+        </div>
+        <div class="smallprint">
+          Ce ZIP est un modèle statique (HTML/CSS/JS) pour illustrer une interface plus pro.
+          Il ne modifie pas ton site existant et ne dépend d’aucun plugin.
+        </div>
+      </div>
+
+      <div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;">
+          <a class="btn" href="listing.html">Voir tous les articles</a>
+          <a class="btn" href="contact.html">Me contacter</a>
+        </div>
+        <div class="smallprint" style="margin-top:10px; text-align:right;">
+          © 2026. Modèle UI. Adaptable à WordPress.com ou WordPress auto-hébergé.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/script.js"></script>
+</body>
+</html>
