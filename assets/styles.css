@@ -1,33 +1,33 @@
 /* ============================================
    LA PLUME ARTISTE - Design Nature & Éditorial
-   Palette: Verts forêt, beige naturel, accents dorés
+   Palette: Verts olive/kaki, beige naturel
    Typographie: Cormorant Garamond (titres) + Source Sans 3 (corps)
    ============================================ */
 
 /* === Variables CSS === */
 :root {
-  /* Couleurs Nature */
-  --forest-deep: #1a3a2f;
-  --forest: #2f5233;
-  --forest-light: #4a7c59;
-  --sage: #87a878;
-  --sage-light: #b8d4a8;
+  /* Couleurs Olive/Kaki */
+  --forest-deep: #4a5d23;
+  --forest: #5c7a29;
+  --forest-light: #8cb32d;
+  --sage: #a4c639;
+  --sage-light: #d4e6a5;
   
-  /* Tons Terre */
-  --earth-dark: #5c4a3d;
-  --earth: #8B7355;
-  --earth-light: #c4a77d;
-  --gold: #c9a456;
-  --gold-light: #e8d4a8;
+  /* Tons Terre/Beige */
+  --earth-dark: #5c5a3d;
+  --earth: #8B8355;
+  --earth-light: #c4ba7d;
+  --gold: #a09456;
+  --gold-light: #e8e4a8;
   
   /* Neutres Naturels */
-  --cream: #fefefe;
-  --paper: #ffffff;
-  --linen: #fafafa;
-  --stone: #e8e4dc;
+  --cream: #ebf4d7;
+  --paper: #f2f7e5;
+  --linen: #ebf4d7;
+  --stone: #d5e0c2;
   --bark: #3d3d3d;
   --ink: #1a1a1a;
-  --muted: #6b6b6b;
+  --muted: #5a5a5a;
   
   /* Couleurs Suisse (pour accents) */
   --swiss-red: #d62828;
@@ -82,7 +82,7 @@ body {
   font-size: 16px;
   line-height: 1.7;
   color: var(--ink);
-  background-color: #fefefe;
+  background-color: #ebf4d7;
   background-image: url('bg-plume.png');
   background-repeat: no-repeat;
   background-position: right bottom;
@@ -109,7 +109,7 @@ body {
 @media (max-width: 768px) {
   body {
     background-image: none;
-    background-color: #fefefe;
+    background-color: #ebf4d7;
   }
 }
 
@@ -165,10 +165,10 @@ a:hover {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(254, 254, 254, 0.95);
+  background: rgba(235, 244, 215, 0.95);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(139, 115, 85, 0.15);
+  border-bottom: 1px solid rgba(92, 122, 41, 0.2);
 }
 
 .header-inner {
@@ -432,18 +432,18 @@ a:hover {
   align-items: center;
   gap: var(--space-sm);
   padding: var(--space-xs) var(--space-md);
-  background: linear-gradient(135deg, var(--gold-light), var(--earth-light));
+  background: linear-gradient(135deg, var(--sage-light), var(--sage));
   border-radius: 999px;
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--earth-dark);
+  color: var(--forest-deep);
   margin-bottom: var(--space-lg);
 }
 
 .badge-icon {
-  color: var(--gold);
+  color: var(--forest);
 }
 
 .hero h1 {
@@ -587,10 +587,10 @@ a:hover {
   padding: var(--space-2xl) 0;
 }
 
-/* Fond blanc semi-transparent pour les sections principales */
+/* Fond pour les sections principales */
 .section-featured,
 .section-articles {
-  background: rgba(254, 254, 254, 0.85);
+  background: rgba(235, 244, 215, 0.9);
   margin: 0 -50vw;
   padding-left: 50vw;
   padding-right: 50vw;
@@ -611,7 +611,7 @@ a:hover {
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--forest-light);
   margin-bottom: var(--space-xs);
 }
 
@@ -870,7 +870,7 @@ a:hover {
    ABOUT SECTION
    ============================================ */
 .section-about {
-  background: rgba(254, 254, 254, 0.9);
+  background: rgba(235, 244, 215, 0.95);
   padding: var(--space-3xl) 0;
 }
 
