@@ -391,5 +391,72 @@
   </footer>
 
   <script src="assets/script.js"></script>
+  <script>
+    // Injection des articles publiés via admin.html (localStorage)
+    (function() {
+      try {
+        const articles = JSON.parse(localStorage.getItem('laplumeartiste_articles') || '[]');
+        if (articles.length === 0) return;
+
+        // === Mise à jour du "À la une" avec le dernier article ===
+        const latest = articles[0];
+        const featuredCard = document.querySelector('.featured-card');
+        if (featuredCard && latest) {
+          const featuredImg = featuredCard.querySelector('.featured-img');
+          const featuredCategory = featuredCard.querySelector('.category-badge');
+          const featuredDate = featuredCard.querySelector('time');
+          const featuredReadTime = featuredCard.querySelector('.reading-time');
+          const featuredTitle = featuredCard.querySelector('h3 a');
+          const featuredExcerpt = featuredCard.querySelector('.article-excerpt');
+          const featuredLink = featuredCard.querySelector('.read-more');
+
+          if (latest.image && featuredImg) featuredImg.src = latest.image;
+          if (featuredCategory) featuredCategory.textContent = latest.categoryLabel;
+          if (featuredDate) { featuredDate.textContent = latest.dateFormatted; featuredDate.setAttribute('datetime', latest.date); }
+          if (featuredReadTime) featuredReadTime.textContent = latest.readTime + ' min de lecture';
+          if (featuredTitle) { featuredTitle.textContent = latest.title; featuredTitle.href = '#'; featuredTitle.onclick = function(e) { e.preventDefault(); openDynamicArticle(latest.id); }; }
+          if (featuredExcerpt) featuredExcerpt.textContent = latest.excerpt;
+          if (featuredLink) { featuredLink.href = '#'; featuredLink.onclick = function(e) { e.preventDefault(); openDynamicArticle(latest.id); }; }
+        }
+
+        // === Injecter les articles dans la grille ===
+        const grid = document.querySelector('.section-articles .articles-grid');
+        if (!grid) return;
+
+        articles.slice().reverse().forEach(article => {
+          const card = document.createElement('article');
+          card.className = 'article-card';
+          const imgSrc = article.image || 'assets/logo.png';
+
+          card.innerHTML = `
+            <div class="card-image">
+              <img src="${imgSrc}" alt="" class="card-img" />
+              <span class="category-tag">${article.categoryLabel}</span>
+            </div>
+            <div class="card-content">
+              <div class="article-meta small">
+                <time datetime="${article.date}">${article.dateShort}</time>
+                <span class="meta-divider">·</span>
+                <span>${article.readTime} min</span>
+                ${article.hasAudio ? '<span class="meta-divider">·</span><span title="Contient un audio">♪</span>' : ''}
+              </div>
+              <h4><a href="#" onclick="openDynamicArticle('${article.id}'); return false;">${article.title}</a></h4>
+              <p>${article.excerpt}</p>
+            </div>
+          `;
+
+          grid.insertBefore(card, grid.firstChild);
+        });
+      } catch(e) { console.log('Erreur injection articles:', e); }
+    })();
+
+    function openDynamicArticle(articleId) {
+      const articles = JSON.parse(localStorage.getItem('laplumeartiste_articles') || '[]');
+      const article = articles.find(a => a.id === articleId);
+      if (!article) return;
+      localStorage.setItem('laplumeartiste_current', JSON.stringify(article));
+      window.location.href = 'article.html?id=' + articleId;
+    }
+  </script>
 </body>
 </html>

@@ -3,181 +3,242 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Article | Modèle UI</title>
+  <title>Article | La Plume Artiste</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/styles.css" />
+  <style>
+    .article-audio-player {
+      margin: var(--space-xl) 0;
+      padding: var(--space-lg);
+      background: rgba(212, 230, 165, 0.25);
+      border: 1px solid var(--stone);
+      border-radius: var(--radius-lg);
+    }
+    .article-audio-player .audio-label {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      font-weight: 600;
+      color: var(--forest-deep);
+      margin-bottom: var(--space-md);
+      font-size: 0.92rem;
+    }
+    .article-audio-player audio {
+      width: 100%;
+      border-radius: 8px;
+    }
+  </style>
 </head>
 <body>
+  <div class="nature-bg" aria-hidden="true"></div>
   <a class="skip" href="#contenu">Aller au contenu</a>
+  
   <header class="header">
     <div class="container header-inner">
       <a class="brand" href="index.html" aria-label="Accueil">
-        <div class="logo" aria-hidden="true"></div>
+        <img src="assets/logo.png" alt="La Plume Artiste" class="logo-img" />
         <div class="brand-text">
           <div class="brand-name">La Plume Artiste</div>
-          <div class="brand-tag">Magazine personnel. Journalisme, littérature, art.</div>
+          <div class="brand-tag">Journaliste en Herbe</div>
         </div>
       </a>
-
       <nav class="nav" aria-label="Navigation principale">
-        <a href="index.html" class="">Accueil</a>
+        <a href="index.html">Accueil</a>
         <a href="listing.html" class="active">Articles</a>
-        <a href="contact.html" class="">Contact</a>
+        <a href="contact.html">Contact</a>
       </nav>
-
       <div class="tools">
-        <div class="search" role="search" aria-label="Recherche">
-          <span aria-hidden="true">⌕</span>
-          <input type="search" placeholder="Rechercher" aria-label="Rechercher" />
-        </div>
-        <a class="btn primary" href="contact.html#newsletter">S’abonner</a>
+        <a class="btn btn-primary" href="contact.html#newsletter">S'abonner</a>
       </div>
+      <button class="menu-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
     </div>
   </header>
 
   <main id="contenu" class="container">
-
-  <section class="article" aria-label="Article">
-    <article class="prose">
-      <div class="kicker">Psychologie</div>
-      <h1>Les profils idéaux. Illusion, projection, et ce que l’on cherche vraiment</h1>
-      <p class="lead">
-        Une page article pensée pour la lecture. Colonne maîtrisée, intertitres, citations, et encadrés.
-      </p>
-      <p class="byline">Publié le 27 janvier 2026. Temps de lecture estimé. 8 minutes.</p>
-
-      <p>
-        Quand on parle de profil idéal, on mélange souvent trois choses. Le désir. Le besoin. Le récit.
-        Le résultat, c’est qu’on croit viser une personne, alors qu’on cherche surtout une sensation.
-      </p>
-
-      <blockquote>
-        La compatibilité n’est pas une preuve de destin. C’est une capacité à construire dans le réel.
-      </blockquote>
-
-      <h2>1. Le désir est une direction, pas un verdict</h2>
-      <p>
-        Un bon design éditorial sert le texte. Il aide à respirer. Il rend l’intention visible.
-        Ici, chaque section a une fonction, et la page garde une cohérence d’ensemble.
-      </p>
-
-      <div class="callout">
-        <strong>À retenir</strong>
-        <div style="margin-top:6px; color: var(--muted);">
-          Clarifier l’angle dès les premières lignes augmente la confiance du lecteur.
-        </div>
-      </div>
-
-      <h2>2. La projection fait croire que l’on a compris</h2>
-      <p>
-        Une interface pro limite le bruit. Elle évite les répétitions et favorise une navigation stable.
-        Le lecteur doit savoir où il est, quoi lire ensuite, et comment s’abonner.
-      </p>
-
-      <h2>3. Le réel tranche</h2>
-      <p>
-        La conclusion n’a pas besoin d’être spectaculaire. Elle doit être nette.
-        Dans un site personnel, le luxe, c’est la lisibilité et la constance.
-      </p>
-
-      <div class="tags" aria-label="Tags">
-        <a href="listing.html">Psychologie</a>
-        <a href="listing.html">Relationnel</a>
-        <a href="listing.html">Lecture</a>
-      </div>
-
-      <section class="section" aria-label="Articles liés">
-        <div class="section-head">
-          <div>
-            <div class="section-title">Articles liés</div>
-            <div class="section-sub">Une sélection courte, orientée découverte.</div>
+    <div class="article-layout">
+      <article class="prose" id="articleContent">
+        <header>
+          <div style="display: flex; align-items: center; gap: var(--space-md); margin-bottom: var(--space-lg);">
+            <a href="listing.html" class="btn btn-ghost btn-sm">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+              Retour
+            </a>
+            <span class="category-badge" style="position: static;" id="dynCategory">—</span>
           </div>
-          <a class="btn" href="listing.html">Voir tous les articles</a>
+          
+          <h1 id="dynTitle">Chargement…</h1>
+          
+          <p class="lead" id="dynExcerpt"></p>
+          
+          <div class="byline">
+            <span>Par <strong>Charlotte Ollivier</strong></span>
+            <span class="meta-divider">·</span>
+            <time id="dynDate"></time>
+            <span class="meta-divider">·</span>
+            <span id="dynReadTime"></span>
+          </div>
+        </header>
+
+        <figure style="margin: var(--space-xl) 0; text-align: center;" id="dynImageFigure">
+          <img src="assets/logo.png" alt="" style="max-width: 100%; border-radius: var(--radius-lg);" id="dynImage" />
+        </figure>
+
+        <!-- Lecteur audio -->
+        <div class="article-audio-player" id="dynAudioSection" style="display: none;">
+          <div class="audio-label">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+            </svg>
+            Écouter cet article
+          </div>
+          <audio controls id="dynAudio"></audio>
         </div>
 
-        <div class="grid">
-          <article class="card" style="grid-column: span 6;">
-            <div class="card-media" aria-hidden="true"></div>
-            <div class="card-body">
-              <div class="meta">
-                <span>12 janv 2026</span><span class="dot"></span><span>6 min</span><span class="dot"></span><span>Société</span>
-              </div>
-              <h3><a href="article.html">Regarder le réel sans se perdre</a></h3>
-              <p>Attention, nuance, et hygiène mentale face au flux.</p>
-            </div>
-          </article>
-
-          <article class="card" style="grid-column: span 6;">
-            <div class="card-media" aria-hidden="true"></div>
-            <div class="card-body">
-              <div class="meta">
-                <span>04 déc 2025</span><span class="dot"></span><span>5 min</span><span class="dot"></span><span>Portrait</span>
-              </div>
-              <h3><a href="article.html">Portrait. Une voix, une trajectoire</a></h3>
-              <p>Une mise en page magazine, simple et lisible.</p>
-            </div>
-          </article>
+        <div id="dynBody">
+          <p style="color: var(--muted); font-style: italic;">L'article est en cours de chargement…</p>
         </div>
-      </section>
-    </article>
 
-    <aside class="sidebar" aria-label="Encarts">
-      <div class="panel">
-        <h3>À propos</h3>
-        <p>Bio courte, positionnement, et liens de contact.</p>
-        <a class="btn primary" href="contact.html">Me contacter</a>
-      </div>
+        <footer class="tags" id="dynTags"></footer>
+      </article>
 
-      <div class="panel">
-        <h3>Newsletter</h3>
-        <p>Un email quand un texte sort. Rien d’autre.</p>
-        <form action="#" onsubmit="return false;">
-          <input type="email" placeholder="Ton email" aria-label="Email" style="width:100%; margin-bottom:8px;" />
-          <button class="btn primary" type="submit" style="width:100%;">S’abonner</button>
-        </form>
-      </div>
-
-      <div class="panel">
-        <h3>Repères</h3>
-        <ul>
-          <li>Navigation stable</li>
-          <li>Typographie lisible</li>
-          <li>Sections éditoriales claires</li>
-          <li>Appels à l’action sobres</li>
-        </ul>
-      </div>
-    </aside>
-  </section>
-
+      <aside class="sidebar">
+        <div class="panel">
+          <h3>À propos</h3>
+          <p>Charlotte Ollivier, journaliste en herbe. Magazine alliant journalisme, littérature et art.</p>
+          <a href="contact.html" class="btn btn-outline btn-sm" style="width: 100%;">Me contacter</a>
+        </div>
+        <div class="panel">
+          <h3>Autres articles</h3>
+          <ul id="dynRelated">
+            <li><a href="article-blocage.html">Blocage et détresse</a></li>
+            <li><a href="article-tristesse-amour.html">La tristesse de l'amour</a></li>
+            <li><a href="article-ascenseur.html">L'ascenseur émotionnel</a></li>
+          </ul>
+        </div>
+      </aside>
+    </div>
   </main>
 
   <footer class="footer">
-    <div class="container footer-inner">
-      <div>
-        <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
-          <div class="logo" aria-hidden="true" style="width:34px;height:34px;border-radius:12px;"></div>
+    <div class="container">
+      <div class="footer-main">
+        <div class="footer-brand">
+          <img src="assets/logo.png" alt="" class="footer-logo" />
           <div>
-            <div style="font-weight:850; color:#111;">La Plume Artiste</div>
-            <div class="smallprint">Écriture, observation, portraits et idées.</div>
+            <div class="footer-name">La Plume Artiste</div>
+            <p class="footer-tagline">Charlotte Ollivier</p>
           </div>
         </div>
-        <div class="smallprint">
-          Ce ZIP est un modèle statique (HTML/CSS/JS) pour illustrer une interface plus pro.
-          Il ne modifie pas ton site existant et ne dépend d’aucun plugin.
-        </div>
       </div>
-
-      <div>
-        <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;">
-          <a class="btn" href="listing.html">Voir tous les articles</a>
-          <a class="btn" href="contact.html">Me contacter</a>
+      <nav class="footer-nav">
+        <div class="footer-col">
+          <h5>Navigation</h5>
+          <a href="index.html">Accueil</a>
+          <a href="listing.html">Articles</a>
+          <a href="contact.html">Contact</a>
         </div>
-        <div class="smallprint" style="margin-top:10px; text-align:right;">
-          © 2026. Modèle UI. Adaptable à WordPress.com ou WordPress auto-hébergé.
+        <div class="footer-col">
+          <h5>Thématiques</h5>
+          <a href="listing.html?cat=reflexions">Réflexions</a>
+          <a href="listing.html?cat=histoire">Histoire</a>
+          <a href="listing.html?cat=portraits">Portraits</a>
         </div>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">
+        <p>© 2026 La Plume Artiste — Charlotte Ollivier</p>
       </div>
     </div>
   </footer>
 
   <script src="assets/script.js"></script>
+  <script>
+    // Charger un article dynamique depuis localStorage
+    (function() {
+      const params = new URLSearchParams(window.location.search);
+      const articleId = params.get('id');
+
+      if (!articleId) return;
+
+      try {
+        let article = null;
+
+        // D'abord essayer le cache courant
+        const cached = JSON.parse(localStorage.getItem('laplumeartiste_current') || 'null');
+        if (cached && cached.id === articleId) {
+          article = cached;
+        } else {
+          // Sinon chercher dans la liste
+          const articles = JSON.parse(localStorage.getItem('laplumeartiste_articles') || '[]');
+          article = articles.find(a => a.id === articleId);
+        }
+
+        if (!article) {
+          document.getElementById('dynTitle').textContent = 'Article introuvable';
+          document.getElementById('dynBody').innerHTML = '<p>Cet article n\'existe plus ou n\'a pas été trouvé.</p>';
+          return;
+        }
+
+        loadArticle(article);
+      } catch(e) {
+        console.error('Erreur chargement article:', e);
+      }
+
+      function loadArticle(art) {
+        document.title = art.title + ' | La Plume Artiste';
+
+        document.getElementById('dynCategory').textContent = art.categoryLabel;
+        document.getElementById('dynTitle').textContent = art.title;
+        document.getElementById('dynExcerpt').textContent = art.excerpt;
+        document.getElementById('dynDate').textContent = art.dateFormatted;
+        document.getElementById('dynDate').setAttribute('datetime', art.date);
+        document.getElementById('dynReadTime').textContent = art.readTime + ' min de lecture';
+
+        // Image
+        if (art.image) {
+          document.getElementById('dynImage').src = art.image;
+          document.getElementById('dynImage').alt = art.title;
+        } else {
+          document.getElementById('dynImageFigure').style.display = 'none';
+        }
+
+        // Audio
+        if (art.audio) {
+          document.getElementById('dynAudioSection').style.display = 'block';
+          document.getElementById('dynAudio').src = art.audio;
+        }
+
+        // Corps
+        let body = art.content;
+        if (!/<[a-z][\s\S]*>/i.test(body)) {
+          body = body.split(/\n\n+/).map(p => '<p>' + p.replace(/\n/g, '<br>') + '</p>').join('\n');
+        }
+        document.getElementById('dynBody').innerHTML = body;
+
+        // Tags
+        if (art.tags && art.tags.length > 0) {
+          document.getElementById('dynTags').innerHTML = art.tags
+            .map(tag => '<a href="listing.html?tag=' + encodeURIComponent(tag) + '">' + tag + '</a>')
+            .join('');
+        }
+
+        // Sidebar — autres articles dynamiques
+        try {
+          const allArticles = JSON.parse(localStorage.getItem('laplumeartiste_articles') || '[]');
+          const others = allArticles.filter(a => a.id !== art.id).slice(0, 3);
+          if (others.length > 0) {
+            const relatedHtml = others.map(a => {
+              return '<li><a href="article.html?id=' + a.id + '">' + a.title + '</a></li>';
+            }).join('');
+            document.getElementById('dynRelated').innerHTML = relatedHtml;
+          }
+        } catch(e) {}
+      }
+    })();
+  </script>
 </body>
 </html>

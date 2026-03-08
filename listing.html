@@ -362,5 +362,57 @@
   </footer>
 
   <script src="assets/script.js"></script>
+  <script>
+    // Injection des articles publiés via admin.html (localStorage)
+    (function() {
+      try {
+        const articles = JSON.parse(localStorage.getItem('laplumeartiste_articles') || '[]');
+        if (articles.length === 0) return;
+
+        const grid = document.querySelector('.articles-grid');
+        if (!grid) return;
+
+        // Insérer chaque article devant les articles existants (le premier publié = le plus récent)
+        articles.reverse().forEach(article => {
+          const card = document.createElement('article');
+          card.className = 'article-card';
+          card.setAttribute('data-dynamic', 'true');
+
+          const imgSrc = article.image || 'assets/logo.png';
+          const imgAlt = article.hasImage ? article.title : '';
+
+          card.innerHTML = `
+            <div class="card-image">
+              <img src="${imgSrc}" alt="${imgAlt}" class="card-img" />
+              <span class="category-tag">${article.categoryLabel}</span>
+            </div>
+            <div class="card-content">
+              <div class="article-meta small">
+                <time datetime="${article.date}">${article.dateShort}</time>
+                <span class="meta-divider">·</span>
+                <span>${article.readTime} min</span>
+                ${article.hasAudio ? '<span class="meta-divider">·</span><span title="Contient un audio">♪</span>' : ''}
+              </div>
+              <h4><a href="#" onclick="openDynamicArticle('${article.id}'); return false;">${article.title}</a></h4>
+              <p>${article.excerpt}</p>
+            </div>
+          `;
+
+          grid.insertBefore(card, grid.firstChild);
+        });
+      } catch(e) { console.log('Erreur injection articles:', e); }
+    })();
+
+    // Ouvrir un article dynamique dans une nouvelle page
+    function openDynamicArticle(articleId) {
+      const articles = JSON.parse(localStorage.getItem('laplumeartiste_articles') || '[]');
+      const article = articles.find(a => a.id === articleId);
+      if (!article) return;
+
+      // Stocker l'article courant pour la page de lecture
+      localStorage.setItem('laplumeartiste_current', JSON.stringify(article));
+      window.location.href = 'article.html?id=' + articleId;
+    }
+  </script>
 </body>
 </html>

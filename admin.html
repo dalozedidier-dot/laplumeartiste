@@ -1,0 +1,1251 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Publier un article | La Plume Artiste</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css" />
+  <style>
+    /* === Admin Page Styles === */
+    .admin-layout {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: var(--space-xl);
+      padding: var(--space-2xl) 0;
+      align-items: start;
+    }
+
+    @media (max-width: 1024px) {
+      .admin-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* === Éditeur === */
+    .editor-panel {
+      background: var(--paper);
+      border: 1px solid var(--stone);
+      border-radius: var(--radius-xl);
+      padding: var(--space-xl);
+      box-shadow: var(--shadow-md);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .editor-panel::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--forest), var(--gold));
+    }
+
+    .editor-title {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: var(--forest-deep);
+      margin-bottom: var(--space-lg);
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+    }
+
+    .editor-title svg {
+      color: var(--forest);
+    }
+
+    /* === Champs de formulaire === */
+    .form-group {
+      margin-bottom: var(--space-lg);
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--forest-deep);
+      margin-bottom: var(--space-sm);
+      letter-spacing: 0.02em;
+    }
+
+    .form-group label .required {
+      color: var(--swiss-red);
+      margin-left: 2px;
+    }
+
+    .form-group label .hint {
+      font-weight: 400;
+      color: var(--muted);
+      font-size: 0.82rem;
+      margin-left: var(--space-sm);
+    }
+
+    .form-input,
+    .form-textarea,
+    .form-select {
+      width: 100%;
+      padding: var(--space-md);
+      font-family: inherit;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--ink);
+      background: white;
+      border: 1.5px solid var(--stone);
+      border-radius: var(--radius-md);
+      transition: all var(--transition-base);
+      outline: none;
+    }
+
+    .form-input:focus,
+    .form-textarea:focus,
+    .form-select:focus {
+      border-color: var(--forest);
+      box-shadow: 0 0 0 3px rgba(92, 122, 41, 0.12);
+    }
+
+    .form-input::placeholder,
+    .form-textarea::placeholder {
+      color: #b0b0b0;
+    }
+
+    .form-textarea {
+      min-height: 260px;
+      resize: vertical;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-md);
+    }
+
+    @media (max-width: 600px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* === Toolbar de mise en forme === */
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      padding: var(--space-sm);
+      background: rgba(212, 230, 165, 0.3);
+      border: 1.5px solid var(--stone);
+      border-bottom: none;
+      border-radius: var(--radius-md) var(--radius-md) 0 0;
+    }
+
+    .toolbar + .form-textarea {
+      border-radius: 0 0 var(--radius-md) var(--radius-md);
+    }
+
+    .toolbar-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 6px;
+      cursor: pointer;
+      color: var(--earth-dark);
+      font-size: 0.85rem;
+      font-weight: 700;
+      transition: all var(--transition-fast);
+    }
+
+    .toolbar-btn:hover {
+      background: rgba(92, 122, 41, 0.12);
+      color: var(--forest-deep);
+      border-color: rgba(92, 122, 41, 0.2);
+    }
+
+    .toolbar-sep {
+      width: 1px;
+      height: 24px;
+      background: var(--stone);
+      margin: 5px 4px;
+    }
+
+    /* === Upload zones === */
+    .upload-zone {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-md);
+      padding: var(--space-xl) var(--space-lg);
+      border: 2px dashed var(--stone);
+      border-radius: var(--radius-lg);
+      background: rgba(242, 247, 229, 0.5);
+      cursor: pointer;
+      transition: all var(--transition-base);
+      text-align: center;
+      min-height: 140px;
+    }
+
+    .upload-zone:hover {
+      border-color: var(--forest-light);
+      background: rgba(212, 230, 165, 0.2);
+    }
+
+    .upload-zone.drag-over {
+      border-color: var(--forest);
+      background: rgba(164, 198, 57, 0.15);
+      transform: scale(1.01);
+    }
+
+    .upload-zone.has-file {
+      border-style: solid;
+      border-color: var(--forest-light);
+      background: rgba(212, 230, 165, 0.15);
+    }
+
+    .upload-zone input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .upload-icon {
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(92, 122, 41, 0.1);
+      border-radius: 50%;
+      color: var(--forest);
+    }
+
+    .upload-text {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .upload-text strong {
+      color: var(--forest);
+    }
+
+    .upload-text small {
+      display: block;
+      font-size: 0.8rem;
+      color: #999;
+      margin-top: 4px;
+    }
+
+    /* Preview dans l'upload zone */
+    .upload-preview {
+      display: none;
+      width: 100%;
+      align-items: center;
+      gap: var(--space-md);
+    }
+
+    .upload-preview.visible {
+      display: flex;
+    }
+
+    .upload-preview img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--stone);
+    }
+
+    .upload-preview .file-info {
+      flex: 1;
+      text-align: left;
+    }
+
+    .upload-preview .file-name {
+      font-weight: 600;
+      font-size: 0.88rem;
+      color: var(--ink);
+      word-break: break-all;
+    }
+
+    .upload-preview .file-size {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .upload-preview .remove-file {
+      padding: var(--space-xs) var(--space-sm);
+      background: rgba(214, 40, 40, 0.08);
+      border: 1px solid rgba(214, 40, 40, 0.2);
+      border-radius: 6px;
+      color: var(--swiss-red);
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .upload-preview .remove-file:hover {
+      background: rgba(214, 40, 40, 0.15);
+    }
+
+    /* Audio preview */
+    .audio-preview {
+      display: none;
+      width: 100%;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+
+    .audio-preview.visible {
+      display: flex;
+    }
+
+    .audio-preview audio {
+      width: 100%;
+      height: 40px;
+      border-radius: 8px;
+    }
+
+    .audio-preview .audio-info {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* === Boutons d'action === */
+    .form-actions {
+      display: flex;
+      gap: var(--space-md);
+      margin-top: var(--space-xl);
+      padding-top: var(--space-xl);
+      border-top: 1px solid var(--stone);
+    }
+
+    .btn-publish {
+      flex: 1;
+      padding: var(--space-md) var(--space-xl);
+      font-size: 1rem;
+      background: var(--forest);
+      border: 2px solid var(--forest);
+      color: white;
+      border-radius: var(--radius-lg);
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-sm);
+      transition: all var(--transition-base);
+    }
+
+    .btn-publish:hover {
+      background: var(--forest-deep);
+      border-color: var(--forest-deep);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .btn-publish:active {
+      transform: translateY(0);
+    }
+
+    .btn-reset {
+      padding: var(--space-md) var(--space-lg);
+      font-size: 0.9rem;
+      background: transparent;
+      border: 1.5px solid var(--stone);
+      color: var(--muted);
+      border-radius: var(--radius-lg);
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all var(--transition-base);
+    }
+
+    .btn-reset:hover {
+      border-color: var(--swiss-red);
+      color: var(--swiss-red);
+      background: rgba(214, 40, 40, 0.04);
+    }
+
+    /* === Sidebar — Aperçu en direct === */
+    .preview-panel {
+      position: sticky;
+      top: 100px;
+    }
+
+    .preview-card {
+      background: var(--paper);
+      border: 1px solid var(--stone);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+    }
+
+    .preview-header {
+      padding: var(--space-md) var(--space-lg);
+      background: rgba(212, 230, 165, 0.3);
+      border-bottom: 1px solid var(--stone);
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      font-weight: 600;
+      font-size: 0.88rem;
+      color: var(--forest-deep);
+    }
+
+    .preview-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--forest-light);
+      border-radius: 50%;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .preview-body {
+      padding: var(--space-lg);
+    }
+
+    .preview-image-placeholder {
+      width: 100%;
+      height: 180px;
+      background: linear-gradient(135deg, rgba(212, 230, 165, 0.4), rgba(164, 198, 57, 0.15));
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+      font-style: italic;
+      margin-bottom: var(--space-md);
+      overflow: hidden;
+    }
+
+    .preview-image-placeholder img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .preview-category {
+      display: inline-block;
+      padding: 2px var(--space-sm);
+      background: rgba(92, 122, 41, 0.1);
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--forest);
+      text-transform: capitalize;
+      margin-bottom: var(--space-sm);
+    }
+
+    .preview-title {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--forest-deep);
+      line-height: 1.3;
+      margin-bottom: var(--space-sm);
+      min-height: 1.3em;
+    }
+
+    .preview-meta {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: var(--space-md);
+    }
+
+    .preview-excerpt {
+      font-size: 0.88rem;
+      color: var(--earth-dark);
+      line-height: 1.6;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      min-height: 1.6em;
+    }
+
+    .preview-audio-badge {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      margin-top: var(--space-md);
+      padding: var(--space-sm) var(--space-md);
+      background: rgba(92, 122, 41, 0.08);
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+      color: var(--forest);
+      font-weight: 500;
+    }
+
+    .preview-audio-badge.visible {
+      display: inline-flex;
+    }
+
+    /* === Liste des articles publiés === */
+    .published-section {
+      margin-top: var(--space-xl);
+    }
+
+    .published-title {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--forest-deep);
+      margin-bottom: var(--space-md);
+      padding-bottom: var(--space-sm);
+      border-bottom: 1px solid var(--stone);
+    }
+
+    .published-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+
+    .published-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      padding: var(--space-md);
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: var(--radius-md);
+      transition: all var(--transition-base);
+      animation: slideIn 0.4s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .published-item:hover {
+      box-shadow: var(--shadow-sm);
+      border-color: var(--forest-light);
+    }
+
+    .published-item-thumb {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-sm);
+      object-fit: cover;
+      background: rgba(212, 230, 165, 0.3);
+      flex-shrink: 0;
+    }
+
+    .published-item-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .published-item-title {
+      font-weight: 600;
+      font-size: 0.88rem;
+      color: var(--ink);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .published-item-meta {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .published-item-badge {
+      display: flex;
+      gap: 4px;
+    }
+
+    .mini-badge {
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.68rem;
+      font-weight: 600;
+    }
+
+    .mini-badge.img {
+      background: rgba(92, 122, 41, 0.1);
+      color: var(--forest);
+    }
+
+    .mini-badge.audio {
+      background: rgba(160, 148, 86, 0.12);
+      color: var(--gold);
+    }
+
+    /* === Toast notification === */
+    .toast {
+      position: fixed;
+      bottom: var(--space-xl);
+      right: var(--space-xl);
+      padding: var(--space-md) var(--space-xl);
+      background: var(--forest-deep);
+      color: white;
+      border-radius: var(--radius-lg);
+      font-weight: 600;
+      font-size: 0.9rem;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      z-index: 1000;
+      transform: translateY(120%);
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .toast.visible {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* === Aide contextuelle === */
+    .help-note {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-sm);
+      padding: var(--space-md);
+      background: rgba(212, 230, 165, 0.3);
+      border-radius: var(--radius-md);
+      font-size: 0.82rem;
+      color: var(--earth-dark);
+      line-height: 1.6;
+      margin-top: var(--space-md);
+    }
+
+    .help-note svg {
+      flex-shrink: 0;
+      margin-top: 2px;
+      color: var(--forest);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: var(--space-xl);
+      color: var(--muted);
+      font-style: italic;
+      font-size: 0.88rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="nature-bg" aria-hidden="true"></div>
+  <a class="skip" href="#contenu">Aller au contenu</a>
+
+  <header class="header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="Accueil">
+        <img src="assets/logo.png" alt="La Plume Artiste" class="logo-img" />
+        <div class="brand-text">
+          <div class="brand-name">La Plume Artiste</div>
+          <div class="brand-tag">Journaliste en Herbe</div>
+        </div>
+      </a>
+      <nav class="nav" aria-label="Navigation principale">
+        <a href="index.html">Accueil</a>
+        <a href="listing.html">Articles</a>
+        <a href="contact.html">Contact</a>
+        <a href="admin.html" class="active">Publier</a>
+      </nav>
+      <div class="tools">
+        <a class="btn btn-primary" href="contact.html#newsletter">S'abonner</a>
+      </div>
+      <button class="menu-toggle" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="contenu">
+    <section class="section">
+      <div class="container">
+        <!-- En-tête -->
+        <div style="text-align: center; max-width: 600px; margin: 0 auto var(--space-xl);">
+          <span class="section-label">Espace rédaction</span>
+          <h1 style="font-family: var(--font-display); font-size: clamp(2rem, 4vw, 2.8rem); color: var(--forest-deep); margin: var(--space-md) 0;">Publier un article</h1>
+          <p style="color: var(--muted); line-height: 1.7; font-style: italic;">
+            Rédigez et publiez vos articles. Ils apparaîtront automatiquement en tête de la liste.
+          </p>
+        </div>
+
+        <div class="admin-layout">
+          <!-- Colonne gauche — Éditeur -->
+          <div class="editor-panel">
+            <div class="editor-title">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+              </svg>
+              Nouvel article
+            </div>
+
+            <!-- Titre -->
+            <div class="form-group">
+              <label>Titre de l'article <span class="required">*</span></label>
+              <input type="text" class="form-input" id="articleTitle" placeholder="Ex : L'art de la contemplation" maxlength="120" />
+            </div>
+
+            <!-- Catégorie + Temps de lecture -->
+            <div class="form-row">
+              <div class="form-group">
+                <label>Catégorie <span class="required">*</span></label>
+                <select class="form-select" id="articleCategory">
+                  <option value="">— Choisir —</option>
+                  <option value="reflexions">Réflexions</option>
+                  <option value="histoire">Histoire</option>
+                  <option value="portraits">Portraits</option>
+                  <option value="poesie">Poésie</option>
+                  <option value="litterature">Littérature</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Temps de lecture <span class="hint">(en min)</span></label>
+                <input type="number" class="form-input" id="articleReadTime" placeholder="5" min="1" max="60" value="5" />
+              </div>
+            </div>
+
+            <!-- Extrait -->
+            <div class="form-group">
+              <label>Extrait / chapô <span class="required">*</span></label>
+              <input type="text" class="form-input" id="articleExcerpt" placeholder="Une ou deux phrases d'accroche pour donner envie de lire…" maxlength="200" />
+            </div>
+
+            <!-- Contenu -->
+            <div class="form-group">
+              <label>Contenu de l'article <span class="required">*</span></label>
+              <div class="toolbar">
+                <button type="button" class="toolbar-btn" title="Gras" onclick="insertTag('strong')"><b>G</b></button>
+                <button type="button" class="toolbar-btn" title="Italique" onclick="insertTag('em')"><i>I</i></button>
+                <div class="toolbar-sep"></div>
+                <button type="button" class="toolbar-btn" title="Titre H2" onclick="insertTag('h2')">H2</button>
+                <button type="button" class="toolbar-btn" title="Titre H3" onclick="insertTag('h3')">H3</button>
+                <div class="toolbar-sep"></div>
+                <button type="button" class="toolbar-btn" title="Citation" onclick="insertTag('blockquote')">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6 17h3l2-4V7H5v6h3l-2 4zm8 0h3l2-4V7h-6v6h3l-2 4z"/></svg>
+                </button>
+                <button type="button" class="toolbar-btn" title="Paragraphe" onclick="insertTag('p')">¶</button>
+                <div class="toolbar-sep"></div>
+                <button type="button" class="toolbar-btn" title="Encadré" onclick="insertTag('div', 'callout')">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v4m0 4h.01"/></svg>
+                </button>
+              </div>
+              <textarea class="form-textarea" id="articleContent" placeholder="Écrivez votre article ici…
+
+Utilisez les boutons ci-dessus pour la mise en forme, ou écrivez directement en HTML :
+
+<p>Mon premier paragraphe.</p>
+<h2>Un sous-titre</h2>
+<p>La suite de mon article…</p>
+<blockquote>Une citation inspirante.</blockquote>"></textarea>
+            </div>
+
+            <!-- Tags -->
+            <div class="form-group">
+              <label>Tags <span class="hint">(séparés par des virgules)</span></label>
+              <input type="text" class="form-input" id="articleTags" placeholder="Ex : réflexions, philosophie, société" />
+            </div>
+
+            <!-- Image -->
+            <div class="form-group">
+              <label>
+                Image d'illustration
+                <span class="hint">(JPG, PNG, WebP — max 5 Mo)</span>
+              </label>
+              <div class="upload-zone" id="imageUploadZone">
+                <div class="upload-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/>
+                  </svg>
+                </div>
+                <div class="upload-text">
+                  <strong>Cliquez ou glissez</strong> une image ici
+                  <small>JPG, PNG ou WebP — 5 Mo maximum</small>
+                </div>
+                <input type="file" id="imageInput" accept="image/jpeg,image/png,image/webp" />
+                <div class="upload-preview" id="imagePreview">
+                  <img src="" alt="Aperçu" id="imagePreviewImg" />
+                  <div class="file-info">
+                    <div class="file-name" id="imageFileName"></div>
+                    <div class="file-size" id="imageFileSize"></div>
+                  </div>
+                  <button type="button" class="remove-file" onclick="removeImage()">Supprimer</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Son -->
+            <div class="form-group">
+              <label>
+                Fichier audio
+                <span class="hint">(MP3, OGG, WAV — max 15 Mo)</span>
+              </label>
+              <div class="upload-zone" id="audioUploadZone">
+                <div class="upload-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
+                  </svg>
+                </div>
+                <div class="upload-text">
+                  <strong>Cliquez ou glissez</strong> un fichier audio ici
+                  <small>MP3, OGG ou WAV — 15 Mo maximum</small>
+                </div>
+                <input type="file" id="audioInput" accept="audio/mpeg,audio/ogg,audio/wav" />
+                <div class="audio-preview" id="audioPreview">
+                  <div class="audio-info">
+                    <div>
+                      <div class="file-name" id="audioFileName"></div>
+                      <div class="file-size" id="audioFileSize"></div>
+                    </div>
+                    <button type="button" class="remove-file" onclick="removeAudio()">Supprimer</button>
+                  </div>
+                  <audio controls id="audioPlayer"></audio>
+                </div>
+              </div>
+            </div>
+
+            <!-- Aide -->
+            <div class="help-note">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/><path d="M12 16v-4m0-4h.01"/>
+              </svg>
+              <div>
+                <strong>Astuce :</strong> Les articles publiés sont sauvegardés dans votre navigateur (localStorage). 
+                Ils apparaîtront automatiquement en haut de la page <a href="listing.html" style="color: var(--forest); text-decoration: underline;">Articles</a> 
+                et sur la page d'<a href="index.html" style="color: var(--forest); text-decoration: underline;">Accueil</a>.
+              </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="form-actions">
+              <button type="button" class="btn-publish" onclick="publishArticle()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                </svg>
+                Publier l'article
+              </button>
+              <button type="button" class="btn-reset" onclick="resetForm()">Effacer</button>
+            </div>
+          </div>
+
+          <!-- Colonne droite — Aperçu + Articles publiés -->
+          <div class="preview-panel">
+            <!-- Aperçu en direct -->
+            <div class="preview-card">
+              <div class="preview-header">
+                <div class="preview-dot"></div>
+                Aperçu en direct
+              </div>
+              <div class="preview-body">
+                <div class="preview-image-placeholder" id="previewImage">
+                  Aucune image
+                </div>
+                <div class="preview-category" id="previewCategory">Catégorie</div>
+                <div class="preview-title" id="previewTitle">Titre de votre article</div>
+                <div class="preview-meta" id="previewMeta">Aujourd'hui · 5 min de lecture</div>
+                <div class="preview-excerpt" id="previewExcerpt">Votre extrait apparaîtra ici…</div>
+                <div class="preview-audio-badge" id="previewAudio">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+                  </svg>
+                  Contient un fichier audio
+                </div>
+              </div>
+            </div>
+
+            <!-- Articles publiés récemment -->
+            <div class="published-section">
+              <div class="published-title">Articles publiés</div>
+              <div class="published-list" id="publishedList">
+                <div class="empty-state" id="emptyState">
+                  Aucun article publié pour le moment.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-main">
+        <div class="footer-brand">
+          <img src="assets/logo.png" alt="" class="footer-logo" />
+          <div>
+            <div class="footer-name">La Plume Artiste</div>
+            <p class="footer-tagline">Charlotte Ollivier</p>
+          </div>
+        </div>
+      </div>
+      <nav class="footer-nav">
+        <div class="footer-col">
+          <h5>Navigation</h5>
+          <a href="index.html">Accueil</a>
+          <a href="listing.html">Articles</a>
+          <a href="contact.html">Contact</a>
+        </div>
+        <div class="footer-col">
+          <h5>Thématiques</h5>
+          <a href="listing.html?cat=reflexions">Réflexions</a>
+          <a href="listing.html?cat=histoire">Histoire</a>
+          <a href="listing.html?cat=portraits">Portraits</a>
+        </div>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">
+        <p>© 2026 La Plume Artiste — Charlotte Ollivier</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast de notification -->
+  <div class="toast" id="toast">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <path d="M20 6L9 17l-5-5"/>
+    </svg>
+    <span id="toastMessage">Article publié avec succès !</span>
+  </div>
+
+  <script src="assets/script.js"></script>
+  <script>
+    // ================================================
+    // LA PLUME ARTISTE — Script de publication
+    // Les articles sont stockés en localStorage
+    // et injectés dynamiquement sur listing.html et index.html
+    // ================================================
+
+    let imageData = null;
+    let audioData = null;
+
+    // === Aperçu en direct ===
+    const titleInput = document.getElementById('articleTitle');
+    const categorySelect = document.getElementById('articleCategory');
+    const excerptInput = document.getElementById('articleExcerpt');
+    const readTimeInput = document.getElementById('articleReadTime');
+
+    titleInput.addEventListener('input', updatePreview);
+    categorySelect.addEventListener('change', updatePreview);
+    excerptInput.addEventListener('input', updatePreview);
+    readTimeInput.addEventListener('input', updatePreview);
+
+    function updatePreview() {
+      document.getElementById('previewTitle').textContent = titleInput.value || 'Titre de votre article';
+      
+      const cat = categorySelect.value;
+      const catLabel = categorySelect.options[categorySelect.selectedIndex]?.text || 'Catégorie';
+      const previewCat = document.getElementById('previewCategory');
+      previewCat.textContent = cat ? catLabel : 'Catégorie';
+      previewCat.style.display = cat ? 'inline-block' : 'inline-block';
+
+      document.getElementById('previewExcerpt').textContent = excerptInput.value || 'Votre extrait apparaîtra ici…';
+
+      const today = new Date();
+      const dateStr = today.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+      const readTime = readTimeInput.value || '5';
+      document.getElementById('previewMeta').textContent = `${dateStr} · ${readTime} min de lecture`;
+    }
+
+    // === Upload image ===
+    const imageInput = document.getElementById('imageInput');
+    const imageUploadZone = document.getElementById('imageUploadZone');
+
+    imageInput.addEventListener('change', handleImageSelect);
+
+    // Drag & drop
+    ['dragenter', 'dragover'].forEach(evt => {
+      imageUploadZone.addEventListener(evt, (e) => {
+        e.preventDefault();
+        imageUploadZone.classList.add('drag-over');
+      });
+    });
+    ['dragleave', 'drop'].forEach(evt => {
+      imageUploadZone.addEventListener(evt, (e) => {
+        e.preventDefault();
+        imageUploadZone.classList.remove('drag-over');
+      });
+    });
+    imageUploadZone.addEventListener('drop', (e) => {
+      const file = e.dataTransfer.files[0];
+      if (file && file.type.startsWith('image/')) {
+        processImageFile(file);
+      }
+    });
+
+    function handleImageSelect(e) {
+      const file = e.target.files[0];
+      if (file) processImageFile(file);
+    }
+
+    function processImageFile(file) {
+      if (file.size > 5 * 1024 * 1024) {
+        showToast('Image trop lourde (max 5 Mo)');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        imageData = e.target.result;
+
+        // Afficher le preview dans la zone d'upload
+        document.getElementById('imagePreviewImg').src = imageData;
+        document.getElementById('imageFileName').textContent = file.name;
+        document.getElementById('imageFileSize').textContent = formatFileSize(file.size);
+        document.getElementById('imagePreview').classList.add('visible');
+        imageUploadZone.classList.add('has-file');
+        imageUploadZone.querySelector('.upload-icon').style.display = 'none';
+        imageUploadZone.querySelector('.upload-text').style.display = 'none';
+
+        // Mettre à jour l'aperçu sidebar
+        document.getElementById('previewImage').innerHTML = `<img src="${imageData}" alt="Aperçu" />`;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function removeImage() {
+      imageData = null;
+      imageInput.value = '';
+      document.getElementById('imagePreview').classList.remove('visible');
+      imageUploadZone.classList.remove('has-file');
+      imageUploadZone.querySelector('.upload-icon').style.display = '';
+      imageUploadZone.querySelector('.upload-text').style.display = '';
+      document.getElementById('previewImage').innerHTML = 'Aucune image';
+    }
+
+    // === Upload audio ===
+    const audioInput = document.getElementById('audioInput');
+    const audioUploadZone = document.getElementById('audioUploadZone');
+
+    audioInput.addEventListener('change', handleAudioSelect);
+
+    ['dragenter', 'dragover'].forEach(evt => {
+      audioUploadZone.addEventListener(evt, (e) => {
+        e.preventDefault();
+        audioUploadZone.classList.add('drag-over');
+      });
+    });
+    ['dragleave', 'drop'].forEach(evt => {
+      audioUploadZone.addEventListener(evt, (e) => {
+        e.preventDefault();
+        audioUploadZone.classList.remove('drag-over');
+      });
+    });
+    audioUploadZone.addEventListener('drop', (e) => {
+      const file = e.dataTransfer.files[0];
+      if (file && file.type.startsWith('audio/')) {
+        processAudioFile(file);
+      }
+    });
+
+    function handleAudioSelect(e) {
+      const file = e.target.files[0];
+      if (file) processAudioFile(file);
+    }
+
+    function processAudioFile(file) {
+      if (file.size > 15 * 1024 * 1024) {
+        showToast('Fichier audio trop lourd (max 15 Mo)');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        audioData = e.target.result;
+
+        document.getElementById('audioFileName').textContent = file.name;
+        document.getElementById('audioFileSize').textContent = formatFileSize(file.size);
+        document.getElementById('audioPlayer').src = audioData;
+        document.getElementById('audioPreview').classList.add('visible');
+        audioUploadZone.classList.add('has-file');
+        audioUploadZone.querySelector('.upload-icon').style.display = 'none';
+        audioUploadZone.querySelector('.upload-text').style.display = 'none';
+
+        document.getElementById('previewAudio').classList.add('visible');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function removeAudio() {
+      audioData = null;
+      audioInput.value = '';
+      document.getElementById('audioPreview').classList.remove('visible');
+      audioUploadZone.classList.remove('has-file');
+      audioUploadZone.querySelector('.upload-icon').style.display = '';
+      audioUploadZone.querySelector('.upload-text').style.display = '';
+      document.getElementById('previewAudio').classList.remove('visible');
+      document.getElementById('audioPlayer').src = '';
+    }
+
+    // === Toolbar d'édition ===
+    function insertTag(tag, className) {
+      const textarea = document.getElementById('articleContent');
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const selected = textarea.value.substring(start, end);
+      const classAttr = className ? ` class="${className}"` : '';
+
+      let insertion;
+      if (selected) {
+        insertion = `<${tag}${classAttr}>${selected}</${tag}>`;
+      } else {
+        insertion = `<${tag}${classAttr}>Votre texte ici</${tag}>`;
+      }
+
+      textarea.value = textarea.value.substring(0, start) + insertion + textarea.value.substring(end);
+      textarea.focus();
+      textarea.setSelectionRange(start + insertion.length, start + insertion.length);
+    }
+
+    // === Publication ===
+    function publishArticle() {
+      const title = titleInput.value.trim();
+      const category = categorySelect.value;
+      const excerpt = excerptInput.value.trim();
+      const content = document.getElementById('articleContent').value.trim();
+      const readTime = readTimeInput.value || '5';
+      const tags = document.getElementById('articleTags').value.trim();
+
+      // Validation
+      if (!title) { showToast('Veuillez saisir un titre'); titleInput.focus(); return; }
+      if (!category) { showToast('Veuillez choisir une catégorie'); categorySelect.focus(); return; }
+      if (!excerpt) { showToast('Veuillez saisir un extrait'); excerptInput.focus(); return; }
+      if (!content) { showToast('Veuillez rédiger le contenu'); document.getElementById('articleContent').focus(); return; }
+
+      // Créer l'objet article
+      const now = new Date();
+      const article = {
+        id: 'article-' + Date.now(),
+        title,
+        category,
+        categoryLabel: categorySelect.options[categorySelect.selectedIndex].text,
+        excerpt,
+        content,
+        readTime,
+        tags: tags ? tags.split(',').map(t => t.trim()).filter(Boolean) : [],
+        date: now.toISOString(),
+        dateFormatted: now.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }),
+        dateShort: now.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' }),
+        image: imageData,
+        audio: audioData,
+        hasImage: !!imageData,
+        hasAudio: !!audioData
+      };
+
+      // Sauvegarder dans localStorage
+      const articles = getPublishedArticles();
+      articles.unshift(article); // Ajouter devant
+      localStorage.setItem('laplumeartiste_articles', JSON.stringify(articles));
+
+      // Feedback
+      showToast('Article publié avec succès !');
+      updatePublishedList();
+      resetForm();
+    }
+
+    function getPublishedArticles() {
+      try {
+        return JSON.parse(localStorage.getItem('laplumeartiste_articles') || '[]');
+      } catch {
+        return [];
+      }
+    }
+
+    // === Afficher la liste des articles publiés ===
+    function updatePublishedList() {
+      const articles = getPublishedArticles();
+      const list = document.getElementById('publishedList');
+      const empty = document.getElementById('emptyState');
+
+      if (articles.length === 0) {
+        empty.style.display = 'block';
+        // Supprimer les items existants (sauf empty state)
+        list.querySelectorAll('.published-item').forEach(el => el.remove());
+        return;
+      }
+
+      empty.style.display = 'none';
+      
+      // Reconstruire la liste
+      list.querySelectorAll('.published-item').forEach(el => el.remove());
+
+      articles.forEach(article => {
+        const item = document.createElement('div');
+        item.className = 'published-item';
+
+        const thumbSrc = article.image || 'assets/logo.png';
+        let badges = '';
+        if (article.hasImage) badges += '<span class="mini-badge img">IMG</span>';
+        if (article.hasAudio) badges += '<span class="mini-badge audio">♪</span>';
+
+        item.innerHTML = `
+          <img src="${thumbSrc}" alt="" class="published-item-thumb" />
+          <div class="published-item-info">
+            <div class="published-item-title">${article.title}</div>
+            <div class="published-item-meta">${article.dateShort} · ${article.categoryLabel}</div>
+          </div>
+          <div class="published-item-badge">${badges}</div>
+        `;
+        list.appendChild(item);
+      });
+    }
+
+    // === Reset du formulaire ===
+    function resetForm() {
+      titleInput.value = '';
+      categorySelect.value = '';
+      excerptInput.value = '';
+      document.getElementById('articleContent').value = '';
+      readTimeInput.value = '5';
+      document.getElementById('articleTags').value = '';
+      removeImage();
+      removeAudio();
+      updatePreview();
+    }
+
+    // === Toast notification ===
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastMessage').textContent = message;
+      toast.classList.add('visible');
+      setTimeout(() => toast.classList.remove('visible'), 3000);
+    }
+
+    // === Utilitaire ===
+    function formatFileSize(bytes) {
+      if (bytes < 1024) return bytes + ' o';
+      if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' Ko';
+      return (bytes / (1024 * 1024)).toFixed(1) + ' Mo';
+    }
+
+    // === Initialisation ===
+    updatePublishedList();
+    updatePreview();
+  </script>
+</body>
+</html>
